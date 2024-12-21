@@ -1,3 +1,5 @@
 .vscode
 clear.py
 format.py
+.cph
+*.exe
