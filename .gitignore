@@ -1,4 +1,5 @@
-clear.py
-format.py
-.cph
-*.exe
+.vscode
+*/*
+!*.cpp
+!README.md
+!.gitignore

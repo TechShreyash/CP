@@ -1,2 +1,2 @@
 # CP
-Just storing my code solutions
+For storing my Competitive Programming code
