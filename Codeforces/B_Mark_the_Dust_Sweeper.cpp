@@ -14,15 +14,6 @@ void printArray(int arr[], int n)
     cout << endl; // Move to the next line after printing all elements
 }
 
-bool areAllZero(int arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        if (arr[i] != 0) {
-            return false; // If any element is not zero, return false
-        }
-    }
-    return true; // All elements are zero
-}
-
 int main()
 {
     std::ios::sync_with_stdio(false);
@@ -38,51 +29,26 @@ int main()
         cin >> n;
 
         int arr[n];
+        long long turns = 0;
+        bool start = false;
 
         for (int i = 0; i < n; i++)
         {
-            int a;
-            cin >> a;
-            arr[i] = a;
-        }
-
-        int x = 0;
-
-        while (true)
-        {
-            bool skip = false;
-
-            for (int i = 0; i < n - 1; i++)
+            cin >> arr[i];
+            if (i != n - 1)
             {
-                if (areAllZero(arr,n-1))
+                if ((arr[i] == 0) && (start))
                 {
-                    break;
-                }
-                if (arr[i]==0){
-                    continue;
-                }
-                
-                if (skip)
-                {
-                    skip = false;
-                    continue;
+                    turns++;
                 }
 
-                arr[i]--;
-                arr[i + 1]++;
-                skip = true;
+                if (arr[i] != 0)
+                {
+                    turns += arr[i];
+                    start = true;
+                }
             }
-            printArray(arr, n);
-            cout<<areAllZero(arr,n-1)<<endl;
-
-            if (areAllZero(arr,n-1))
-            {
-                break;
-            }
-            x++;
         }
-
-        cout << x << endl;
-        // break;
+        cout << turns << endl;
     }
 }
