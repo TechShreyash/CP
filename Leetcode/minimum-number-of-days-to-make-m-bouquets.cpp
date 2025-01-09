@@ -1,10 +1,31 @@
 // https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/description/
 
 #include <bits/stdc++.h>
+
 using namespace std;
 
 #define endl '\n'
 #define ll long long
+
+int getBouquetCount(const vector<int> &bloomDay, int k, int waitingDays)
+{
+    int bouquetCount = 0;
+    int requiredFlowers = k;
+
+    for (const int day : bloomDay)
+    {
+        if (day > waitingDays)
+        {
+            requiredFlowers = k;
+        }
+        else if (--requiredFlowers == 0)
+        {
+            ++bouquetCount;
+            requiredFlowers = k;
+        }
+    }
+    return bouquetCount;
+}
 
 int main()
 {
@@ -23,25 +44,18 @@ int main()
         return -1;
     }
 
-    if (1LL * m * k == n)
-    {
-        int day = 0;
+    int l = *std::min_element(bloomDay.begin(), bloomDay.end());
+    int r = *std::max_element(bloomDay.begin(), bloomDay.end());
 
-        for (int i = 0; i < n; i++)
-        {
-            if (bloomDay[i] > day)
-            {
-                day = bloomDay[i];
-            }
-        }
-        return day;
-    }
-    else
+    while (l < r)
     {
-        map<vector<int>, int> unique;
-
-        for (int i = k - 1; i < n; i++)
-        {
-        }
+        const int mid = (l + r) / 2;
+        if (getBouquetCount(bloomDay, k, mid) >= m)
+            r = mid;
+        else
+            l = mid + 1;
     }
+
+    cout << l;
+    return l;
 }
