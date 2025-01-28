@@ -1,5 +1,1 @@
-.vscode
-*/*
-!*.cpp
-!README.md
-!.gitignore
+.cph/*
