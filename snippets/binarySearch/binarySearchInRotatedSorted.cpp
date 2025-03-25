@@ -8,7 +8,6 @@ bool search(vector<int> &nums, int target)
 
     while (l <= r)
     {
-        cout << l << " " << r << "\n";
         int m = (l + r) / 2;
 
         if (nums[m] == target)
