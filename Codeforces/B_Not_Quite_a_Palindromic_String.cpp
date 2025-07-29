@@ -89,47 +89,59 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    int l, b, h;
-    cin >> l >> b >> h;
+    ll n, k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
 
-    ll total = 0;
-
-    vl neg;
-
-    rep(i, l * b * h)
+    ll one = 0, zero = 0;
+    rep(i, n)
     {
-        int x;
-        cin >> x;
-        if (x >= 0)
+        if (s[i] == '1')
         {
-            total += x;
+            one++;
         }
         else
         {
-            neg.pb(-x);
+            zero++;
         }
     }
 
-    sort(neg.begin(), neg.end());
-
-    if (sz(neg) % 2 == 0)
+    while (k > 0)
     {
-        total += accumulate(neg.begin(), neg.end(), 0LL);
+        if (one >= zero)
+        {
+            one -= 2;
+            k--;
+        }
+        else
+        {
+            zero -= 2;
+            k--;
+        }
+    }
+
+    if (one == zero && k == 0)
+    {
+        cout << "YES" << nl;
     }
     else
     {
-
-        total += accumulate(neg.begin() + 1, neg.end(), 0LL);
+        cout << "NO" << nl;
     }
-
-    cout << total << nl;
 }
 
 int32_t main()
 {
     fastio();
 
-    solve();
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        solve();
+    }
 
     return 0;
 }

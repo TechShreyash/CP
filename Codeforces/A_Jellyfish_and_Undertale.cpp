@@ -1,4 +1,4 @@
-// PROBLEM LINK
+// https://codeforces.com/problemset/problem/1875/A
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,47 +89,38 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    int l, b, h;
-    cin >> l >> b >> h;
+    ll a, b, n;
+    cin >> a >> b >> n;
 
-    ll total = 0;
+    vl arr(n);
+    cin >> arr;
 
-    vl neg;
-
-    rep(i, l * b * h)
+    ll t = b;
+    rep(i, n)
     {
-        int x;
-        cin >> x;
-        if (x >= 0)
+        if (arr[i] >= a)
         {
-            total += x;
+            t += a - 1;
         }
         else
         {
-            neg.pb(-x);
+            t += arr[i];
         }
     }
-
-    sort(neg.begin(), neg.end());
-
-    if (sz(neg) % 2 == 0)
-    {
-        total += accumulate(neg.begin(), neg.end(), 0LL);
-    }
-    else
-    {
-
-        total += accumulate(neg.begin() + 1, neg.end(), 0LL);
-    }
-
-    cout << total << nl;
+    cout << t << nl;
 }
 
 int32_t main()
 {
     fastio();
 
-    solve();
+    int t;
+    cin >> t;
+
+    while (t--)
+    {
+        solve();
+    }
 
     return 0;
 }

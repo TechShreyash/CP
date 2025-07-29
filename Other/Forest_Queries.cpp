@@ -89,40 +89,63 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    int l, b, h;
-    cin >> l >> b >> h;
+    int n, q;
+    cin >> n >> q;
+    vector<vector<int>> arr(n, vector<int>(n));
 
-    ll total = 0;
-
-    vl neg;
-
-    rep(i, l * b * h)
+    for (int i = 0; i < n; i++)
     {
-        int x;
-        cin >> x;
-        if (x >= 0)
+        string s;
+        cin >> s;
+        for (int j = 0; j < s.length(); j++)
         {
-            total += x;
-        }
-        else
-        {
-            neg.pb(-x);
+            if (s[j] == '*')
+            {
+                arr[i][j] = 1;
+            }
         }
     }
 
-    sort(neg.begin(), neg.end());
+    dbg(arr);
 
-    if (sz(neg) % 2 == 0)
+    vector<vector<int>> P(n, vector<int>(n));
+
+    for (int i = 0; i < n; i++)
     {
-        total += accumulate(neg.begin(), neg.end(), 0LL);
+        P[i][0] = arr[i][0] + (i > 0 ? P[i - 1][0] : 0);
     }
-    else
+    for (int i = 0; i < n; i++)
     {
-
-        total += accumulate(neg.begin() + 1, neg.end(), 0LL);
+        P[0][i] = arr[0][i] + (i > 0 ? P[0][i - 1] : 0);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            P[i][j] = arr[i][j] + (i > 0 ? P[i - 1][j] : 0) + (j > 0 ? P[i][j - 1] : 0) - ((i > 0 && j > 0) ? P[i - 1][j - 1] : 0);
+        }
     }
 
-    cout << total << nl;
+    dbg(P);
+
+    for (int i = 0; i < q; i++)
+    {
+        int a, b, c, d;
+        cin >> a >> b >> c >> d;
+        a -= 1;
+        b -= 1;
+        c -= 1;
+        d -= 1;
+
+        int ans = P[c][d];
+        if (a > 0)
+            ans -= P[a - 1][d];
+        if (b > 0)
+            ans -= P[c][b - 1];
+        if (a > 0 && b > 0)
+            ans += P[a - 1][b - 1];
+        cout << ans << endl;
+    }
 }
 
 int32_t main()

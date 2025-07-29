@@ -1,4 +1,4 @@
-// PROBLEM LINK
+// https://codeforces.com/contest/295/problem/A
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -85,44 +85,65 @@ ll lcm(ll a, ll b){return (a/gcd(a,b)*b);}
 ll moduloMultiplication(ll a,ll b,ll mod){ll res = 0;a %= mod;while (b){if (b & 1)res = (res + a) % mod;b >>= 1;}return res;}
 ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y > 0){if (y & 1)res = (res*x) % p;y = y>>1;x = (x*x) % p;}return res;}
 
+
+
 // clang-format on
 
 void solve()
 {
-    int l, b, h;
-    cin >> l >> b >> h;
+    ll n, m, k;
+    cin >> n >> m >> k;
 
-    ll total = 0;
+    vl arr(n);
+    cin >> arr;
 
-    vl neg;
-
-    rep(i, l * b * h)
+    vector<vl> ops(m, vl(4, 0));
+    rep(i, m)
     {
-        int x;
-        cin >> x;
-        if (x >= 0)
-        {
-            total += x;
-        }
-        else
-        {
-            neg.pb(-x);
-        }
+        cin >> ops[i][0];
+        cin >> ops[i][1];
+        cin >> ops[i][2];
     }
 
-    sort(neg.begin(), neg.end());
+    vl diffOp(m + 1, 0);
 
-    if (sz(neg) % 2 == 0)
+    rep(i, k)
     {
-        total += accumulate(neg.begin(), neg.end(), 0LL);
-    }
-    else
-    {
-
-        total += accumulate(neg.begin() + 1, neg.end(), 0LL);
+        ll x, y;
+        cin >> x >> y;
+        diffOp[x - 1] += 1;
+        diffOp[y] -= 1;
     }
 
-    cout << total << nl;
+    vl prefOp(m, 0);
+    rep(i, m)
+    {
+        prefOp[i] = diffOp[i] + (i > 0 ? prefOp[i - 1] : 0);
+    }
+
+    dbg(prefOp);
+
+    vl diff(n + 1, 0);
+
+    rep(i, m)
+    {
+        ll l = ops[i][0];
+        ll r = ops[i][1];
+        ll d = ops[i][2] * prefOp[i];
+
+        diff[l - 1] += d;
+        diff[r] -= d;
+    }
+
+    dbg(diff);
+
+    ll sum = 0;
+    rep(i, n)
+    {
+        sum += diff[i];
+        arr[i] += sum;
+    }
+    cout << arr << endl;
 }
 
 int32_t main()
