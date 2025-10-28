@@ -1,0 +1,1 @@
+{"name":"Local: 4","url":"/home/shreyash/CP/C++/4.cpp","tests":[{"id":1760811887780,"input":"4\n2\n0 0\n3\n1 1 1\n3\n1 2 3\n7\n0 1 0 2 0 3 0\n","output":"Case #1: 0\nCase #2: 8\nCase #3: 9\nCase #4: 72\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyash/CP/C++/4.cpp","group":"local","local":true}
