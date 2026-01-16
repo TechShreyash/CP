@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/contest/276/problem/C
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -92,61 +92,80 @@ void solve()
     ll n, q;
     cin >> n >> q;
 
-    vector<vl> tree(n + 1, vl(n + 1));
+    vl arr(n);
+    cin >> arr;
+    sort(arr.begin(), arr.end(), [](ll &a, ll &b)
+         { return a > b; });
+
+    vl diff(n + 1);
+    vector<vl> query(q);
+    rep(i, q)
+    {
+        ll l, r;
+        cin >> l >> r;
+        diff[l - 1]++;
+        diff[r]--;
+        query[i] = vl{l, r};
+    }
+
+    dbg(diff);
+
+    vl pref(n);
+    pref[0] = diff[0];
+    vector<vl> idx;
+    idx.push_back(vl{pref[0], 0});
+
+    for (ll i = 1; i < n; i++)
+    {
+        pref[i] = pref[i - 1] + diff[i];
+        idx.push_back(vl{pref[i], i});
+    }
+
+    dbg(pref);
+
+    vl brr(n);
+
+    sort(idx.begin(), idx.end(), [](vl &a, vl &b)
+         { return a[0] > b[0]; });
+
+    dbg(idx);
 
     rep(i, n)
     {
-        rep(j, n)
-        {
-            char c;
-            cin >> c;
-            if (c == '*')
-            {
-                tree[i + 1][j + 1] = 1;
-            }
-        }
+        brr[idx[i][1]] = arr[i];
     }
 
-    dbg(tree);
+    dbg(brr);
 
-    vector<vl> arr(n + 1, vl(n + 1));
+    vl pref2(n);
+    pref2[0] = brr[0];
 
-    rep(i, n)
+    for (ll i = 1; i < n; i++)
     {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
+        pref2[i] = pref2[i - 1] + brr[i];
     }
 
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
+    dbg(pref2);
+    ll ans = 0;
 
     rep(i, q)
     {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
+        ll l = query[i][0], r = query[i][1];
+        ans += pref2[r - 1];
+        if (l > 1)
+        {
+            ans -= pref2[l - 2];
+        }
+        dbg(ans);
     }
-    dbg(arr[3][4]);
+
+    cout << ans << nl;
 }
 
 int main()
 {
     fastio();
+
     solve();
     return 0;
 }

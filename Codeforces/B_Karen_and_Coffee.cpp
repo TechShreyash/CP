@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/contest/816/problem/B
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,64 +89,62 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll n, k, q;
+    cin >> n >> k >> q;
 
-    vector<vl> tree(n + 1, vl(n + 1));
+    ll qmax = 200002;
+    vl diff(qmax);
 
     rep(i, n)
     {
-        rep(j, n)
+        ll l, r;
+        cin >> l >> r;
+        diff[l]++;
+        diff[r + 1]--;
+    }
+
+    vl pref(qmax);
+
+    pref[0] = diff[0];
+
+    vl temp(qmax);
+
+    if (pref[0] >= k)
+    {
+        temp[0] = 1;
+    }
+
+    for (ll i = 1; i < qmax; i++)
+    {
+        pref[i] = pref[i - 1] + diff[i];
+
+        if (pref[i] >= k)
         {
-            char c;
-            cin >> c;
-            if (c == '*')
-            {
-                tree[i + 1][j + 1] = 1;
-            }
+            temp[i] = 1;
         }
     }
 
-    dbg(tree);
+    vl pref2(qmax);
 
-    vector<vl> arr(n + 1, vl(n + 1));
-
-    rep(i, n)
+    pref2[0] = temp[0];
+    for (ll i = 1; i < qmax; i++)
     {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
+        pref2[i] = pref2[i - 1] + temp[i];
     }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
 
     rep(i, q)
     {
+        ll a, b;
+        cin >> a >> b;
 
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
+        cout << (pref2[b] - pref2[a - 1]) << nl;
     }
-    dbg(arr[3][4]);
 }
 
 int main()
 {
     fastio();
+
     solve();
     return 0;
 }

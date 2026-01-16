@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/problemset/problem/1726/B
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,64 +89,50 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll n, m;
+    cin >> n >> m;
 
-    vector<vl> tree(n + 1, vl(n + 1));
-
-    rep(i, n)
+    if (m < n)
     {
-        rep(j, n)
+        cout << "No" << nl;
+        return;
+    }
+
+    if (n & 1)
+    {
+        cout << "Yes" << nl;
+        rep(i, n - 1)
         {
-            char c;
-            cin >> c;
-            if (c == '*')
+            cout << 1 << " ";
+            m--;
+        }
+        cout << m << nl;
+    }
+    else
+    {
+        if (m & 1)
+        {
+            cout << "No" << nl;
+        }
+        else
+        {
+            cout << "Yes" << nl;
+            rep(i, n - 2)
             {
-                tree[i + 1][j + 1] = 1;
+                cout << 1 << " ";
+                m--;
             }
+            cout << m / 2 << " " << m / 2 << nl;
         }
     }
-
-    dbg(tree);
-
-    vector<vl> arr(n + 1, vl(n + 1));
-
-    rep(i, n)
-    {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
-    }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
-
-    rep(i, q)
-    {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
-    }
-    dbg(arr[3][4]);
 }
 
 int main()
 {
     fastio();
-    solve();
+    ll t = 1; // change if multiple test cases
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }

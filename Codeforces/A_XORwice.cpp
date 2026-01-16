@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/problemset/problem/1421/A
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,64 +89,38 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll a, b;
+    cin >> a >> b;
 
-    vector<vl> tree(n + 1, vl(n + 1));
-
-    rep(i, n)
+    ll at = a, bt = b;
+    ll x = 0;
+    ll i = 0;
+    while ((a > 0) && (b > 0))
     {
-        rep(j, n)
+        ll bit1 = a & 1;
+        ll bit2 = b & 1;
+        dbg(bit1, bit2);
+        if ((bit1 == 1) && (bit2 == 1))
         {
-            char c;
-            cin >> c;
-            if (c == '*')
-            {
-                tree[i + 1][j + 1] = 1;
-            }
+            x += 1 << i;
         }
+        a = a >> 1;
+        b = b >> 1;
+        i++;
     }
 
-    dbg(tree);
+    dbg(x);
 
-    vector<vl> arr(n + 1, vl(n + 1));
-
-    rep(i, n)
-    {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
-    }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
-
-    rep(i, q)
-    {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
-    }
-    dbg(arr[3][4]);
+    ll ans = (at ^ x) + (bt ^ x);
+    cout << ans << nl;
 }
 
 int main()
 {
     fastio();
-    solve();
+    ll t = 1; // change if multiple test cases
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }

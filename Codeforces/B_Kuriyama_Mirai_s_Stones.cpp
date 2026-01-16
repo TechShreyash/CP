@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/contest/433/problem/B
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,59 +89,60 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll n;
+    cin >> n;
+    vl arr(n);
+    cin >> arr;
 
-    vector<vl> tree(n + 1, vl(n + 1));
-
+    vl v(n);
+    ll x = 0;
     rep(i, n)
     {
-        rep(j, n)
+        x += arr[i];
+        v[i] = x;
+    }
+
+    sort(arr.begin(), arr.end());
+
+    vl u(n);
+    x = 0;
+    rep(i, n)
+    {
+        x += arr[i];
+        u[i] = x;
+    }
+
+    dbg(v);
+    dbg(u);
+
+    ll m;
+    cin >> m;
+
+    rep(i, m)
+    {
+        ll t, l, r;
+        cin >> t >> l >> r;
+        l--;r--;
+
+        if (t == 1)
         {
-            char c;
-            cin >> c;
-            if (c == '*')
+            ll ans = v[r];
+            if (l > 0)
             {
-                tree[i + 1][j + 1] = 1;
+                ans -= v[l - 1];
             }
+            cout << ans << nl;
         }
-    }
-
-    dbg(tree);
-
-    vector<vl> arr(n + 1, vl(n + 1));
-
-    rep(i, n)
-    {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
-    }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
+        else
         {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
+            ll ans = u[r];
+            if (l > 0)
+            {
+                ans -= u[l - 1];
+            }
+            cout << ans << nl;
         }
     }
-
-    dbg(arr);
-
-    rep(i, q)
-    {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
-    }
-    dbg(arr[3][4]);
 }
 
 int main()

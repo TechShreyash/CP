@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://cses.fi/problemset/task/1662/
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,64 +89,54 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    ll n;
+    cin >> n;
 
-    vector<vl> tree(n + 1, vl(n + 1));
+    vl arr(n);
+    cin >> arr;
+
+    vl pref(n);
+    pref[0] = arr[0];
+
+    vl freq(n);
+    freq[0]++;
+
+    ll mod = pref[0] % n;
+    freq[mod]++;
+
+    for (ll i = 1; i < n; i++)
+    {
+        pref[i] = arr[i] + pref[i - 1];
+        ll mod = ((pref[i] % n) + n) % n;
+        dbg(mod);
+        freq[mod]++;
+    }
+
+    ll ans = 0;
+    dbg(pref);
 
     rep(i, n)
     {
-        rep(j, n)
+        dbg(i, freq[i]);
+
+        ll x = freq[i];
+        if (x % 2 == 0)
         {
-            char c;
-            cin >> c;
-            if (c == '*')
-            {
-                tree[i + 1][j + 1] = 1;
-            }
+            ans += (x / 2) * (x - 1);
+        }
+        else
+        {
+            ans += x * ((x - 1) / 2);
         }
     }
 
-    dbg(tree);
-
-    vector<vl> arr(n + 1, vl(n + 1));
-
-    rep(i, n)
-    {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
-    }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
-
-    rep(i, q)
-    {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
-    }
-    dbg(arr[3][4]);
+    cout << ans << nl;
 }
 
 int main()
 {
     fastio();
+
     solve();
     return 0;
 }

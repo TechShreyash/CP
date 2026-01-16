@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/problemset/problem/1913/B
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,64 +89,65 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    string s;
+    cin >> s;
 
-    vector<vl> tree(n + 1, vl(n + 1));
+    dbg(s);
 
-    rep(i, n)
+    ll one = 0, zero = 0;
+
+    rep(i, sz(s))
     {
-        rep(j, n)
+        if (s[i] == '0')
         {
-            char c;
-            cin >> c;
-            if (c == '*')
+            zero++;
+        }
+        else
+        {
+            one++;
+        }
+    }
+
+    ll x = 0;
+    rep(i, sz(s))
+    {
+        if (s[i] == '0')
+        {
+            if (one > 0)
             {
-                tree[i + 1][j + 1] = 1;
+                x++;
+                one--;
+            }
+            else
+            {
+                break;
+            }
+        }
+        else
+        {
+            if (zero > 0)
+            {
+                x++;
+                zero--;
+            }
+            else
+            {
+                break;
             }
         }
     }
 
-    dbg(tree);
+    dbg(sz(s),x);
 
-    vector<vl> arr(n + 1, vl(n + 1));
-
-    rep(i, n)
-    {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
-    }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
-
-    rep(i, q)
-    {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
-    }
-    dbg(arr[3][4]);
+    cout<<sz(s)-x<<nl;
 }
 
 int main()
 {
     fastio();
-    solve();
+    ll t = 1; // change if multiple test cases
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }

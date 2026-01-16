@@ -1,4 +1,4 @@
-// https://cses.fi/problemset/task/1652
+// https://codeforces.com/problemset/problem/1547/D
 
 // clang-format off
 #include <bits/stdc++.h>
@@ -89,64 +89,52 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-    ll n, q;
-    cin >> n >> q;
+    int n;
+    cin >> n;
 
-    vector<vl> tree(n + 1, vl(n + 1));
+    vector<bitset<32>> x, y;
+    y.push_back(bitset<32>(0));
 
     rep(i, n)
     {
-        rep(j, n)
+        int a;
+        cin >> a;
+        x.push_back(bitset<32>(a));
+
+        if (i > 0)
         {
-            char c;
-            cin >> c;
-            if (c == '*')
+            bitset<32> yi;
+            bitset<32> b = x[i - 1];
+            bitset<32> c = x[i];
+
+            rep(i, 32)
             {
-                tree[i + 1][j + 1] = 1;
+                if ((b[i] == 1) && (c[i] == 0))
+                {
+                    yi.set(i);
+                }
             }
+            y.push_back(yi);
+
+            x[i] = x[i] ^ yi;
         }
     }
-
-    dbg(tree);
-
-    vector<vl> arr(n + 1, vl(n + 1));
+    dbg(x);
+    dbg(y);
 
     rep(i, n)
     {
-        arr[1][i + 1] = arr[1][i] + tree[1][i + 1];
+        cout << y[i].to_ulong() << " ";
     }
-
-    rep(i, n)
-    {
-        arr[i + 1][1] = arr[i][1] + tree[i + 1][1];
-    }
-
-    for (int i = 1; i < n; i++)
-    {
-        for (int j = 1; j < n; j++)
-        {
-            arr[i + 1][j + 1] = arr[i][j + 1] + arr[i + 1][j] - arr[i][j] + tree[i + 1][j + 1];
-        }
-    }
-
-    dbg(arr);
-
-    rep(i, q)
-    {
-
-        ll y1, x1, y2, x2;
-        cin >> y1 >> x1 >> y2 >> x2;
-
-        ll ans = arr[y2][x2] - arr[y1 - 1][x2] - arr[y2][x1 - 1] + arr[y1 - 1][x1 - 1];
-        dbg(arr[y2][x2], arr[y1 - 1][x2], arr[y2][x1 - 1], arr[y1 - 1][x1 - 1]);
-        cout << ans << nl;
-    }
-    dbg(arr[3][4]);
+    cout << nl;
 }
 
 int main()
 {
     fastio();
-    solve();
+    ll t = 1; // change if multiple test cases
+    cin >> t;
+    while (t--)
+        solve();
     return 0;
 }
