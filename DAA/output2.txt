@@ -1,0 +1,15 @@
+Original Array : 3 2 1 5 4 
+Max Heap : 5 4 1 2 3 
+2th Max : 4
+2th Min : 2
+
+Original Array : 2 4 1 5 6 7 8 9 10 3 
+Max Heap : 10 9 8 5 6 7 1 4 2 3 
+5th Max : 6
+5th Min : 5
+
+Original Array : 10 6 70 100 50 33 65 28 11 15 
+Max Heap : 100 50 70 28 15 33 65 6 11 10 
+7th Max : 15
+7th Min : 50
+
