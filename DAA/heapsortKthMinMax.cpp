@@ -93,8 +93,8 @@ int kthMin(int k, vector<int> arr)
 
 void solve()
 {
-    int n;
-    cin >> n;
+    int n, k;
+    cin >> n >> k;
     vector<int> arr(n);
     for (int i = 0; i < n; i++)
     {
@@ -116,9 +116,6 @@ void solve()
         cout << arr[i] << " ";
     }
     cout << endl;
-
-    int k;
-    cin >> k;
 
     cout << k << "th Max : " << kthMax(k, arr) << endl;
     cout << k << "th Min : " << kthMin(k, arr) << endl;
