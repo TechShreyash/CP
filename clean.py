@@ -3,7 +3,7 @@ import os
 
 def delete_non_cpp_files(base_dir, script_name):
     # Define folders to ignore
-    ignored_folders = {".vscode", ".git"}
+    ignored_folders = {".vscode", ".git","DAA"}
 
     # Define files to skip
     ignored_files = {".gitignore", "debug.hpp", "README.md", script_name}
