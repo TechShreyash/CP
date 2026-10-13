@@ -87,35 +87,54 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 // clang-format on
 
+const ll mod = 1e9 + 7;
+
+ll f(ll i, ll target, vector<vl> &dp)
+{
+    if (target == 0)
+    {
+        return 1;
+    }
+    if (i == 0)
+    {
+        return 0;
+    }
+
+    if (dp[i][target] != -1)
+    {
+        return dp[i][target];
+    }
+
+    ll nottake = f(i - 1, target, dp);
+    ll take = 0;
+    if (i <= target)
+    {
+        take = f(i - 1, target - i, dp);
+    }
+    return dp[i][target] = (nottake + take) % mod;
+}
+
 void solve()
 {
-
     ll n;
     cin >> n;
 
-    vector<string> grid(n);
-    rep(i, n)
+    ll sum = (n * (n + 1)) / 2;
+
+    // dbg(sum);
+
+    if (sum % 2 == 1)
     {
-        cin >> grid[i];
+        cout << 0 << nl;
+        return;
     }
+    ll target = sum / 2;
 
-    string ans = grid[0][0];
+    vector<vl> dp(n, vl(target + 1, -1));
 
-    int i = 0, j = 0;
+    ll ans = f(n - 1, target, dp);
 
-    vector<vector<char>> dp(n, vector<char>(n, '0'));
-
-    while (i < n && j < n)
-    {
-        if (i > 0 && j > 0)
-        {
-            char up = grid[i - 1][j];
-            char left = grid[i][j - 1];
-            if (up == left)
-            {
-            }
-        }
-    }
+    cout << ans % mod << nl;
 }
 
 int main()
