@@ -89,24 +89,78 @@ ll powermod(ll x, ll y, ll p){ll res = 1;x = x % p;if (x == 0) return 0;while (y
 
 void solve()
 {
-
     ll n, m;
     cin >> n >> m;
 
+    vector<array<ll, 3>> edges(m);
     vector<vector<pair<ll, ll>>> adj(n + 1);
     rep(i, m)
     {
-        ll a, b, c;
-        cin >> a >> b >> c;
-        adj[a].push_back({b, c});
+        rep(j, 3)
+        {
+            cin >> edges[i][j];
+        }
+        adj[edges[i][0]].push_back({edges[i][1], edges[i][2]});
     }
+
+    vl dist(n + 1, 0);
+    vl parent(n + 1, -1);
+    dist[1] = 0;
+
+    ll node = -1;
+    rep(i, n)
+    {
+        node = -1;
+
+        for (auto p : edges)
+        {
+            ll u = p[0], v = p[1], wt = p[2];
+
+            if (dist[u] + wt < dist[v])
+            {
+                dist[v] = dist[u] + wt;
+                parent[v] = u;
+                node = v;
+            }
+        }
+        dbg(dist);
+    }
+
+    dbg(parent);
+    dbg(node);
+
+    if (node == -1)
+    {
+        cout << "NO" << nl;
+        return;
+    }
+
+    for (ll i = 0; i < n; ++i)
+    {
+        node = parent[node];
+    }
+
+    vector<ll> cycle;
+    ll cur = node;
+
+    do
+    {
+        cycle.push_back(cur);
+        cur = parent[cur];
+    } while (cur != node);
+
+    cycle.push_back(node);
+    reverse(cycle.begin(), cycle.end());
+
+    cout << "YES" << nl;
+    cout << cycle << nl;
 }
 
 int main()
 {
     fastio();
     ll t = 1; // change if multiple test cases
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
     return 0;
